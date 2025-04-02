@@ -4,31 +4,31 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <string.h>
 using namespace std; //usamos la funcion namespace std, para evitar poner std::
 
 class item //creamos la clase item 
 {
 
 private:
-	string nombreDelItem; //string para colocar nombres a cada item
+    string nombreDelItem; //string para colocar nombres a cada item
     int cantidadDeItem; //entero para añadir cantidades de los items
 
 public:
-	item(string _nombreDelItem, int _cantidadDeItem)//constructor item 
-	{
-        nombreDelItem = _nombreDelItem;
-        cantidadDeItem = _cantidadDeItem;
-	}
+    item() //constructor item 
+    {
 
-	void agregarItem()
-	{
-		cout << "Nombre del item: ";
-		getline(cin, nombreDelItem);
-		cout << "Cantidad: ";
-		cin >> cantidadDeItem;
+    }
 
-	}
+    void crearItem()
+    {
+        cin.ignore();
+        cout << "Nombre del item: ";
+        getline(cin, nombreDelItem);
+        cout << "Cantidad: ";
+        cin >> cantidadDeItem;
+    }
+
     void mostrarUnItem()
     {
         cout << "- Nombre del item: " << nombreDelItem << "\n- Cantidad: " << cantidadDeItem << endl;
@@ -38,71 +38,78 @@ public:
 class inventario
 {
 private:
-	vector<item> listaItems; //vector para almacenar los items
-    string clasesItems;
-
+    string inventarioJugador; //string para almacenar el nombre del jugador
+    vector<item> listaItems; //vector para almacenar los items
 
 public:
-	inventario(string _nombreDelItem, int _cantidadDeItem) //constructor inventario
-	{
-		listaItems.push_back(item(_nombreDelItem, _cantidadDeItem));
-	}
-	void agregarItem(item _item) //funcion para agregar un item al inventario
-	{
-		listaItems.push_back(_item);
-	}
-
-	void mostrarInventario() //funcion para mostrar el inventario
-	{
-		cout << "Inventario: \n";
-
-		for (int i = 0; i < listaItems.size(); i++)
-		{
-			cout << i + 1 << ".- ";
-			listaItems[i].mostrarUnItem();
-		}
-	}
-
-};
-
-
-int menu(int opcion, bool flag) //menu de seleccion de opciones para el jugador
-{
-    cout << "1.- Ver inventario\n"; //mostrar el inventario
-    cout << "2.- Agregar item al inventario\n"; //agregar un item
-    cout << "3.- Eliminar item del inventario\n"; //eliminar un item
-    cout << "4.- Salir del menu\n"; //salir del menu
-    cin >> opcion; //leemos la opcion que el usuario selecciona
-    switch (opcion)
+    inventario(string _nombreJugador) //constructor inventario
     {
-    case 1:
-        inventario.mostrarInventario(string _nombreDelItem, int _cantidadDeItem);
-        break;
-    case 2:
-        inventario.agregarItem();
-        break;
-    case 4:
-        flag = false;
-        break;
-    default:
-        break;
+        inventarioJugador = _nombreJugador;
     }
-}
 
+    void agregarItem(item _item) //funcion para agregar un item al inventario
+    {
+        listaItems.push_back(_item);
+    }
+
+    void mostrarInventario() //funcion para mostrar el inventario
+    {
+        cout << "Inventario: \n";
+
+        for (int i = 0; i < listaItems.size(); i++)
+        {
+            cout << i + 1 << ".- ";
+            listaItems[i].mostrarUnItem();
+        }
+    }
+    void menu() //menu de seleccion de opciones para el jugador
+    {
+        int opcion;
+        item itemNuevo;
+        bool flag = true;
+        while (flag) {
+            cout << "1.- Ver inventario\n"; //mostrar el inventario
+            cout << "2.- Agregar item al inventario\n"; //agregar un item
+            cout << "3.- Eliminar item del inventario\n"; //eliminar un item
+            cout << "4.- Salir del menu\n"; //salir del menu
+            cin >> opcion; //leemos la opcion que el usuario selecciona
+            switch (opcion)
+            {
+            case 1:
+                mostrarInventario();
+				system("pause");
+				system("cls");
+                break;
+            case 2:
+                itemNuevo.crearItem();
+                agregarItem(itemNuevo);
+                system("pause");
+                system("cls");
+                break;
+            case 3:      //en este caso va la funcion de la clase invemtario
+                //que se encarga de eliminar un item de la lista de items 
+                break;
+            case 4:
+                flag = false;
+            default:
+                break
+            }
+
+
+        }
+
+
+    }
+};
 int main()
 {
-	string nombreJugador;
-    int opcion;
-    bool flag = true;
+    string nombreJugador;
     cout << "----Hola jugador!----\nIntroduzca su nombre.\n"; //le pedimos al usuario ingresar un nombre de jugador
-	getline(cin, nombreJugador);
-	inventario inventarioJugador(string _nombreJugador);
-	cout << "Bienvenido " << nombreJugador << " Seleccione una opcion: \n"; //le mostramos el menu al usuario
-    while (flag)
-	{
-		menu(opcion, flag);
-	} 
-	return 0;
+    getline(cin, nombreJugador);
+    inventario inventarioJugador(nombreJugador);
+    cout << "Bienvenido " << nombreJugador << " Seleccione una opcion: \n"; //le mostramos el menu al usuario
+    inventarioJugador.menu();
+    return 0;
 }
 
 /*
